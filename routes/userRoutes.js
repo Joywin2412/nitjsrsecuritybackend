@@ -26,6 +26,7 @@ const {
 const router = express.Router();
 
 function AuthenticateUser(req, res, next) {
+  console.log(req.url);
   try {
     const { email } = req.body;
     const token = req.headers.authorization.split(" ")[1];
