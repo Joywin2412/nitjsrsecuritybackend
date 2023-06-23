@@ -14,7 +14,7 @@ app.use(cors());
 
 app.use(express.json());
 
-app.use("/", userRouters);
+app.use("/api/user", userRouters);
 app.use(notFound);
 app.use(errorHandler);
 
