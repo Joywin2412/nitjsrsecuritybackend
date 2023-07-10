@@ -6,6 +6,8 @@ const generateToken = require("../config/generateToken.js");
 const polygon = require("../models/model2.js");
 const cropsconsider = require("../models/model3.js");
 const friendsconsider = require("../models/model4.js");
+const {PythonShell} = require('python-shell'); 
+
 
 const registerUser = AsyncHandler(async (req, res) => {
   const { name, email, password, phone, lat, lon, address } = req.body;
@@ -596,6 +598,38 @@ const deleteUser = AsyncHandler(async (req, res) => {
     res.json("Failed");
   }
 });
+
+const predictCrop = AsyncHandler(async(req,res)=>{
+  const {state,season,crop,area} = req.body;
+  console.log(state,season,crop,area);
+
+  const { PythonShell } = require('python-shell');
+
+    const pythonFilePath = 'model.py';
+
+    const inputParams = [state,season,crop,area];
+
+  
+    const pyShell = new PythonShell(pythonFilePath);
+    
+    pyShell.send(state);
+    pyShell.send(season);
+    pyShell.send(crop);
+    pyShell.send(area);
+    pyShell.on('message', (output) => {
+      const parsedOutput = JSON.parse(output);
+      res.json(parsedOutput)
+    });
+
+    pyShell.on('error', (err) => {
+      console.log("happened")
+      console.error(err);
+    });
+
+    pyShell.end();
+
+  
+})
 module.exports = {
   registerUser,
   authUser,
@@ -617,6 +651,7 @@ module.exports = {
   acceptList,
   declineList,
   deleteUser,
+  predictCrop
 };
 
 // Request must be in lower case while the schema is in upper case
