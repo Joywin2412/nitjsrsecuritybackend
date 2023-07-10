@@ -602,12 +602,12 @@ const deleteUser = AsyncHandler(async (req, res) => {
 const predictCrop = AsyncHandler(async(req,res)=>{
   const {state,season,crop,area} = req.body;
   console.log(state,season,crop,area);
-
+  try{
   const { PythonShell } = require('python-shell');
 
     const pythonFilePath = 'model.py';
 
-    const inputParams = [state,season,crop,area];
+    
 
   
     const pyShell = new PythonShell(pythonFilePath);
@@ -627,7 +627,12 @@ const predictCrop = AsyncHandler(async(req,res)=>{
     });
     // res.json("No data given");
     pyShell.end();
-
+  }
+  catch(err)
+  {
+    res.json(err);
+    
+  }
   
 })
 module.exports = {
