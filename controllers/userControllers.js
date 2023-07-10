@@ -625,7 +625,7 @@ const predictCrop = AsyncHandler(async(req,res)=>{
       console.log("happened")
       res.json(err)
     });
-    res.json("No data given");
+    // res.json("No data given");
     pyShell.end();
 
   
